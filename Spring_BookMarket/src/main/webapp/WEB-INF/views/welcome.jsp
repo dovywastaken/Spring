@@ -1,14 +1,15 @@
+<%@page import="org.springframework.ui.Model"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored = "false" %>
 <!DOCTYPE html>
 <html>
 <head>
-
 <!-- 정적리소스는 절대경로표시를 추천함 -->
 <link href="./resources/css/bootstrap.min.css" rel="stylesheet">
 <meta charset="UTF-8">
 <title>Welcome</title>
 </head>
+
 <body>
 	<nav class="navbar navbar-expand navbar-dark bg-dark">
 		<div class="container">
