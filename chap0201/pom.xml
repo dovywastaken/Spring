@@ -1,0 +1,96 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.springmvc</groupId>
+  <artifactId>chap0201</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>chap0201 Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  
+  <!--key:value의 형식을 가진 일종의 변수-->
+      <properties>
+        <java-version>17</java-version> <!--자바 버전-->
+        <org.springframework-version>5.3.19</org.springframework-version> <!--스프링 버전-->
+        <org.aspectj-version>1.9.9.1</org.aspectj-version>  <!--aspectj 버전-->
+        <org.slf4j-version>1.7.36</org.slf4j-version>  <!--slf4j 버전-->
+    </properties>
+    
+  <!-- 외부 라이브러리 다운로드 경로 -->
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <!-- 스프링 프레임워크에서 spring-contetxt 객체를 지정된 버전을 가져옴 -->
+    <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-context</artifactId>
+         <version>${org.springframework-version}</version>
+         <exclusions>
+            <!-- 로그 남기는 commons-logging 객체는 빼고 주세요 -->
+            <exclusion>
+               <groupId>commons-logging</groupId>
+               <artifactId>commons-logging</artifactId>
+             </exclusion>
+         </exclusions>
+     </dependency>
+     
+     <!-- Spring framework에서 Spring-webmvc 객체들을 주기 -->
+     <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-webmvc</artifactId>
+         <version>${org.springframework-version}</version>
+     </dependency>
+  </dependencies>
+  
+  
+  
+  
+  
+  <build>
+    <finalName>chap0201</finalName>
+    <!-- 빌드시 확장 추가-->
+    <plugins>
+    	<!-- 스프링 배포를 위한 이클립스 플러그인 도입-->
+            <plugin>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <additionalProjectnatures>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                    </additionalProjectnatures>
+                    <additionalBuildcommands>
+                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+                    </additionalBuildcommands>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                </configuration>
+            </plugin>
+            <!-- 배포시 메이븐 컴파일러(자바컴파일러 포함)를 해당버전으로 교체-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <source>17</source>
+                    <target>17</target>
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <mainClass>org.test.int1.Main</mainClass>
+                </configuration>
+            </plugin>
+    </plugins>
+  </build>
+</project>
