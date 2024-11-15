@@ -28,9 +28,7 @@ public class BookController {
     @GetMapping
     public String requestBookList(Model model) {
         System.out.println("================================================================");
-        System.out.println("START: BookController: requestBookList()");
-        
-        System.out.println("BookController: /books 요청 받음");
+        System.out.println("[BookController: books로 매핑되어 컨트롤러로 들어왔습니다]");
         List<Book> list = bookService.getAllBookList();
         if (list == null) {
             System.out.println("받아온 ArrayList가 없음");
@@ -41,17 +39,15 @@ public class BookController {
             }
         }
         model.addAttribute("bookList", list);
-        System.out.println("BookController: 모델에 bookList 추가");
-        
-        System.out.println("books.jsp로 이동합니다");
-        System.out.println("END: BookController: requestBookList()");
+        System.out.println("모델에 bookList 추가");
+        System.out.println("[" + list.size() + "개의 dto를" + "books.jsp로 이동합니다]");
         return "books";
     }
     
     @GetMapping("/all")
     public String requestAllBookList(Model model) {
         System.out.println("================================================================");
-        System.out.println("START: BookController: requestAllBookList()");
+        System.out.println("[BookController: requestAllBookList()으로 매핑되어 컨트롤러로 들어왔습니다]");
         
         System.out.println("BookController: /all 요청 받음");
         ModelAndView modelAndView = new ModelAndView();
@@ -70,15 +66,14 @@ public class BookController {
         // model.addAttribute("bookList", list);
         System.out.println("BookController: 모델에 bookList 추가");
         
-        System.out.println("books.jsp로 이동합니다");
-        System.out.println("END: BookController: requestAllBookList()");
+        System.out.println("[books.jsp로 이동합니다]");
         return "books";
     }
     
     @GetMapping("/{category}")
     public String requestBooksByCategory(@PathVariable("category") String bookCategory, Model model) {
         System.out.println("================================================================");
-        System.out.println("START: BookController: requestBooksByCategory()");
+        System.out.println("[BookController: requestBooksByCategory()으로 매핑되어 컨트롤러로 들어왔습니다]");
         
         System.out.println("URL로 파라미터 받기: " + bookCategory);
         List<Book> booksByCategory = bookService.getBookListByCategory(bookCategory);
@@ -95,15 +90,14 @@ public class BookController {
             System.out.println("List에 값이 없습니다");
         }
         
-        System.out.println("books.jsp로 이동합니다");
-        System.out.println("END: BookController: requestBooksByCategory()");
+        System.out.println("[books.jsp로 이동합니다]");
         return "books";
     }
     
     @GetMapping("/filter/{bookFilter}")
     public String requestBooksByFilter(@MatrixVariable(pathVar="bookFilter") Map<String, List<String>> bookFilter, Model model) {
         System.out.println("================================================================");
-        System.out.println("START: BookController: requestBooksByFilter()");
+        System.out.println("[BookController: requestBooksByFilter()으로 매핑되어 컨트롤러로 들어왔습니다]");
         
         Set<Book> booksByFilter = bookService.getBookListByFilter(bookFilter);
         if (booksByFilter == null) {
@@ -116,15 +110,14 @@ public class BookController {
         }
         model.addAttribute("bookList", booksByFilter);
         
-        System.out.println("books.jsp로 이동합니다");
-        System.out.println("END: BookController: requestBooksByFilter()");
+        System.out.println("[books.jsp로 이동합니다]");
         return "books";
     }
     
     @GetMapping("/book")
     public String requestBookById(@RequestParam("id") String bookId, Model model) {
         System.out.println("================================================================");
-        System.out.println("START: BookController: requestBookById()");
+        System.out.println("[BookController: requestBookById()으로 매핑되어 컨트롤러로 들어왔습니다]");
         
         System.out.println("요청받은 bookId: " + bookId);
         Book bookById = bookService.getBookById(bookId);
@@ -132,11 +125,11 @@ public class BookController {
             System.out.println("해당 ID의 책을 찾을 수 없음");
         } else {
             System.out.println("Book: " + bookById.getName() + ", Author: " + bookById.getAuthor());
+            System.out.println("Description: " + bookById.getDescription());
         }
         model.addAttribute("book", bookById);
         
-        System.out.println("book.jsp로 이동합니다");
-        System.out.println("END: BookController: requestBookById()");
+        System.out.println("[book.jsp로 이동합니다]");
         return "book";
     }
 }

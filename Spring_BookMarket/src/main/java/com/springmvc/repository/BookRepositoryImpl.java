@@ -16,6 +16,9 @@ public class BookRepositoryImpl implements BookRepository
 
     public BookRepositoryImpl() 
     {
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("[BookRepositoryImpl: 생성자 호출됨]");
+        
         Book book1 = new Book("ISBN1234", "C# 교과서", 30000);
         book1.setAuthor("박용준");
         book1.setDescription("C# 교과서는 생애 첫 프로그래밍 언어로 C#을 시작하는 독자들을 대상으로 한다. 특히 응용프로그래머를 위한 C# 입문서로, C#을 사용하여 게임(유니티), 웹, 모바일, IOT 등을 개발할 때 필요한 C# 기초 문법을 익히고 기본기를 탄탄하게 다지는 것이 목적이다.");
@@ -43,97 +46,110 @@ public class BookRepositoryImpl implements BookRepository
         listOfBooks.add(book1);
         listOfBooks.add(book2);
         listOfBooks.add(book3);
+        
+        System.out.println("[BookRepositoryImpl: 생성자 종료]");
     }
 
     @Override
     public List<Book> getAllBookList() 
     {
-        System.out.println("Book 리파지터리 : getAllBookList 호출");
-        System.out.println("Book 리파지터리: getAllBookList 종료 (dto List만 리턴함)");
-        return listOfBooks;
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("[BookRepositoryImpl: getAllBookList() 호출됨]");
+        List<Book> books = listOfBooks;
+        if (books == null || books.isEmpty()) {
+            System.out.println("BookRepositoryImpl: 반환할 책 리스트가 없습니다.");
+        } else {
+            System.out.println("BookRepositoryImpl: " + books.size() + "개의 책 리스트 반환됨.");
+        }
+        System.out.println("[BookRepositoryImpl: getAllBookList() 종료]");
+        return books;
     }
 
-	@Override
-	public List<Book> getBookListByCategory(String category) 
-	{
-		System.out.println("Book 리파지터리: getBookListByCategory 호출");
-		List<Book> booksByCategory = new ArrayList<Book>();
-		for (int i =0; i< listOfBooks.size(); i++) 
-		{
-			Book book = listOfBooks.get(i);
-			if(category.equalsIgnoreCase(book.getCategory())) 
-			{
-				booksByCategory.add(book);
-			}
-		}
-		System.out.println("Book 리파지터리: getBookListByCategory 종료");
-		return booksByCategory;
-	}
-	
-	
-	public Set<Book> getBookListByFilter(Map<String, List<String>> filter)
-	{
-		System.out.println("Book 리파지터리: getBookListByFilter 호출");
-		Set<Book> booksByPublisher = new HashSet<Book>();
-		Set<Book> booksByCategory = new HashSet<Book>();
-		
-		Set<String> booksByFilter = filter.keySet();
-		
-		if(booksByFilter.contains("publisher")) 
-		{
-			for(int j = 0; j < filter.get("publisher").size(); j++) 
-			{
-				String publisherName = filter.get("publisher").get(j);
-				for(int i = 0; i< listOfBooks.size(); i++) 
-				{
-					Book book = listOfBooks.get(i);
-					
-					if(publisherName.equalsIgnoreCase(book.getPublisher()))
-						booksByPublisher.add(book);
-				}
-			}
-		}
-		
-		if(booksByFilter.contains("category")) 
-		{
-			for(int i = 0; i < filter.get("category").size(); i++) 
-			{
-				String category = filter.get("category").get(i);
-				List<Book> list = getBookListByCategory(category);
-				booksByCategory.addAll(list);
-			}
-		}
-		
-		booksByCategory.retainAll(booksByPublisher);
-		return booksByCategory;
-	}
+    @Override
+    public List<Book> getBookListByCategory(String category) 
+    {
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("[BookRepositoryImpl: getBookListByCategory() 호출됨]");
+        List<Book> booksByCategory = new ArrayList<Book>();
+        for (int i = 0; i < listOfBooks.size(); i++) 
+        {
+            Book book = listOfBooks.get(i);
+            if (category.equalsIgnoreCase(book.getCategory())) 
+            {
+                booksByCategory.add(book);
+                System.out.println("BookRepositoryImpl: 카테고리 " + category + "에 해당하는 책 추가: " + book.getName());
+            }
+        }
+        if (booksByCategory.isEmpty()) {
+            System.out.println("BookRepositoryImpl: 해당 카테고리에 책이 없습니다.");
+        }
+        System.out.println("[BookRepositoryImpl: getBookListByCategory() 종료]");
+        return booksByCategory;
+    }
 
-	@Override
-	public Book getBookById(String bookId) 
-	{
-		System.out.println("Book 리파지터리: getBookById 호출");
-		Book bookInfo = null;
-		for(int i =0; i < listOfBooks.size(); i++) 
-		{
-			Book book = listOfBooks.get(i);
-			if(book != null && book.getBookId() != null && book.getBookId().equals(bookId)) 
-			{
-				bookInfo = book;
-				break;
-			}
-		}
-		if(bookInfo == null) 
-		{
-			throw new IllegalArgumentException("도서 ID가 " + bookId + "인 해당 도서를 찾을 수 없습니다.");
-		}
-		return bookInfo;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
+    @Override
+    public Set<Book> getBookListByFilter(Map<String, List<String>> filter)
+    {
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("[BookRepositoryImpl: getBookListByFilter() 호출됨]");
+        Set<Book> booksByPublisher = new HashSet<Book>();
+        Set<Book> booksByCategory = new HashSet<Book>();
+        
+        Set<String> booksByFilter = filter.keySet();
+        
+        if (booksByFilter.contains("publisher")) 
+        {
+            for (int j = 0; j < filter.get("publisher").size(); j++) 
+            {
+                String publisherName = filter.get("publisher").get(j);
+                for (int i = 0; i < listOfBooks.size(); i++) 
+                {
+                    Book book = listOfBooks.get(i);
+                    if (publisherName.equalsIgnoreCase(book.getPublisher())) {
+                        booksByPublisher.add(book);
+                        System.out.println("BookRepositoryImpl: 출판사 " + publisherName + "에 해당하는 책 추가: " + book.getName());
+                    }
+                }
+            }
+        }
+        
+        if (booksByFilter.contains("category")) 
+        {
+            for (int i = 0; i < filter.get("category").size(); i++) 
+            {
+                String category = filter.get("category").get(i);
+                List<Book> list = getBookListByCategory(category);
+                booksByCategory.addAll(list);
+                System.out.println("BookRepositoryImpl: 카테고리 " + category + "에 해당하는 책 리스트 추가");
+            }
+        }
+        
+        booksByCategory.retainAll(booksByPublisher);
+        System.out.println("[BookRepositoryImpl: getBookListByFilter() 종료]");
+        return booksByCategory;
+    }
+
+    @Override
+    public Book getBookById(String bookId) 
+    {
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("[BookRepositoryImpl: getBookById() 호출됨]");
+        Book bookInfo = null;
+        for (int i = 0; i < listOfBooks.size(); i++) 
+        {
+            Book book = listOfBooks.get(i);
+            if (book != null && book.getBookId() != null && book.getBookId().equals(bookId)) 
+            {
+                bookInfo = book;
+                System.out.println("BookRepositoryImpl: 도서 ID가 " + bookId + "인 책 찾음: " + book.getName());
+                break;
+            }
+        }
+        if (bookInfo == null) 
+        {
+            throw new IllegalArgumentException("도서 ID가 " + bookId + "인 해당 도서를 찾을 수 없습니다.");
+        }
+        System.out.println("[BookRepositoryImpl: getBookById() 종료]");
+        return bookInfo;
+    }
 }
