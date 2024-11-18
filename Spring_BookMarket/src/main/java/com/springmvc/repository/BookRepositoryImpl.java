@@ -17,7 +17,7 @@ public class BookRepositoryImpl implements BookRepository
     public BookRepositoryImpl() 
     {
         System.out.println("+++++++++++++++++++++++++++++++++++++++++");
-        System.out.println("[BookRepositoryImpl: 생성자 호출됨]");
+        System.out.println("[BookRepositoryImpl: 생성자 호출됨 (아직 DB가 없어서 생성자에 기본 dto 설정)]");
         
         Book book1 = new Book("ISBN1234", "C# 교과서", 30000);
         book1.setAuthor("박용준");
@@ -46,8 +46,9 @@ public class BookRepositoryImpl implements BookRepository
         listOfBooks.add(book1);
         listOfBooks.add(book2);
         listOfBooks.add(book3);
-        
+        System.out.println("생성자에서 " + book1.getName() + ", " + book2.getName() + ", " + book3.getName() + "을/를 임의로 dto를 생성해둡니다");
         System.out.println("[BookRepositoryImpl: 생성자 종료]");
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++");
     }
 
     @Override
@@ -57,11 +58,12 @@ public class BookRepositoryImpl implements BookRepository
         System.out.println("[BookRepositoryImpl: getAllBookList() 호출됨]");
         List<Book> books = listOfBooks;
         if (books == null || books.isEmpty()) {
-            System.out.println("BookRepositoryImpl: 반환할 책 리스트가 없습니다.");
+            System.out.println("반환할 책 리스트가 없습니다.");
         } else {
-            System.out.println("BookRepositoryImpl: " + books.size() + "개의 책 리스트 반환됨.");
+            System.out.println(books.size() + "개의 책 리스트 반환됨.");
         }
         System.out.println("[BookRepositoryImpl: getAllBookList() 종료]");
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++");
         return books;
     }
 
@@ -84,6 +86,7 @@ public class BookRepositoryImpl implements BookRepository
             System.out.println("BookRepositoryImpl: 해당 카테고리에 책이 없습니다.");
         }
         System.out.println("[BookRepositoryImpl: getBookListByCategory() 종료]");
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++");
         return booksByCategory;
     }
 
@@ -126,6 +129,7 @@ public class BookRepositoryImpl implements BookRepository
         
         booksByCategory.retainAll(booksByPublisher);
         System.out.println("[BookRepositoryImpl: getBookListByFilter() 종료]");
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++");
         return booksByCategory;
     }
 
@@ -150,6 +154,18 @@ public class BookRepositoryImpl implements BookRepository
             throw new IllegalArgumentException("도서 ID가 " + bookId + "인 해당 도서를 찾을 수 없습니다.");
         }
         System.out.println("[BookRepositoryImpl: getBookById() 종료]");
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++");
         return bookInfo;
     }
+
+    public void setNewBook(Book book) 
+    {
+    	System.out.println("+++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("[BookRepositoryImpl: setNewBook() 호출됨]");
+    	listOfBooks.add(book);
+    	System.out.println("폼에 맞춰 작성한 dto를 repository에 저장합니다");
+    	System.out.println("[BookRepositoryImpl: setNewBook() 종료]");
+    	System.out.println("+++++++++++++++++++++++++++++++++++++++++");
+    }
+    
 }

@@ -1,6 +1,7 @@
 <%@page import="org.springframework.ui.Model"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored = "false" %>
+<%@ taglib prefix ="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,8 +15,9 @@
 	<nav class="navbar navbar-expand navbar-dark bg-dark">
 		<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="./home">Home</a>
-				<a class="navbar-brand" href="./books">Books</a>
+				<a class="navbar-brand" href="<c:url value="/home"/>">Home</a>
+				<a class="navbar-brand" href="<c:url value="/books"/>">Books</a>
+				<a class="navbar-brand" href="<c:url value="/add"/>">Adding Book</a>
 			</div>
 		</div>
 	</nav>

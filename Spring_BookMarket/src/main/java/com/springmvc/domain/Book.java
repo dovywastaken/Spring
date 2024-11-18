@@ -11,16 +11,19 @@ public class Book
 	private String category;
 	private long unitsInstock;
 	
-	public Book(String bookId, String name, int unitPrice) {
+	public Book(String bookId, String name, int unitPrice) 
+	{
 		super();
 		this.bookId = bookId;
 		this.name = name;
 		this.unitPrice = unitPrice;
 	}
 	
-	public Book() {
+	public Book() 
+	{
 		super();
 	}
+	
 	private String releaseDate;
 	private String condition;
 	

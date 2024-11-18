@@ -19,34 +19,59 @@ public class BookServiceImpl implements BookService
 	@Override
     public List<Book> getAllBookList() 
 	{
-        System.out.println("Book서비스: getAllBookList 호출");
+		System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		System.out.println("서비스를 거쳐갑니다");
+		System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         return bookRepository.getAllBookList();
     }
 	
     @Override
 	public List<Book> getBookListByCategory(String category) 
     {
-    	System.out.println("Book서비스 : getBookListByCategory 호출");
+    	System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     	List<Book> booksByCategory = bookRepository.getBookListByCategory(category);
     	if(booksByCategory == null) System.out.println("booksByCategory가 null입니다");
-    	System.out.println("Book서비스 : getBookListByCategory 종료");
+    	System.out.println("서비스를 거쳐갑니다");
+    	System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 		return booksByCategory;
 	}
 
 	@Override
 	public Set<Book> getBookListByFilter(Map<String, List<String>> filter) 
 	{
+		System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		System.out.println("서비스를 거쳐갑니다");
 		Set<Book> booksByFilter = bookRepository.getBookListByFilter(filter);
+		
+		System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 		return booksByFilter;
 	}
 
 	@Override
 	public Book getBookById(String bookId) 
 	{
-		Book bookById = bookRepository.getBookById(bookId);
-		return bookById;
+	    System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+	    System.out.println("서비스를 거쳐갑니다");
+	    
+	    if (bookId == null || bookId.trim().isEmpty()) {
+	        throw new IllegalArgumentException("bookId가 유효하지 않습니다.");
+	    }
+
+	    Book bookById = bookRepository.getBookById(bookId);
+	    System.out.println("서비스에서 도서 정보를 확인 후 반환합니다: " + bookById.getName());
+	    System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+	    return bookById;
 	}
-    
+
+
+	@Override
+	public void setNewBook(Book book) 
+	{
+		System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		bookRepository.setNewBook(book);
+		System.out.println("서비스를 거쳐갑니다");
+		System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+	}
     
     
 }

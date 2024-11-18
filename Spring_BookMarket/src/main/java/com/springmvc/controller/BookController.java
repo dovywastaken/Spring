@@ -8,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.MatrixVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,13 +22,13 @@ import com.springmvc.domain.Book;
 import com.springmvc.service.BookService;
 
 @Controller
-@RequestMapping("/books")
+//@RequestMapping("/books")
 public class BookController {
 
     @Autowired
     private BookService bookService;
 
-    @GetMapping
+    @GetMapping("/books")
     public String requestBookList(Model model) {
         System.out.println("================================================================");
         System.out.println("[BookController: books로 매핑되어 컨트롤러로 들어왔습니다]");
@@ -39,8 +42,8 @@ public class BookController {
             }
         }
         model.addAttribute("bookList", list);
-        System.out.println("모델에 bookList 추가");
-        System.out.println("[" + list.size() + "개의 dto를" + "books.jsp로 이동합니다]");
+        System.out.println("모델에 bookList addAttribute 완료");
+        System.out.println("[" + list.size() + "개의 dto를 들고 " + "books.jsp로 이동합니다]");
         return "books";
     }
     
@@ -125,11 +128,35 @@ public class BookController {
             System.out.println("해당 ID의 책을 찾을 수 없음");
         } else {
             System.out.println("Book: " + bookById.getName() + ", Author: " + bookById.getAuthor());
-            System.out.println("Description: " + bookById.getDescription());
         }
         model.addAttribute("book", bookById);
         
         System.out.println("[book.jsp로 이동합니다]");
         return "book";
     }
+    
+    
+    @GetMapping("/add")
+    public String requestAddBookForm(@ModelAttribute("NewBook") Book book) 
+    {
+    	System.out.println("================================================================");
+        System.out.println("[BookController: requestAddBookForm() : 'add'로 매핑되어 컨트롤러로 들어왔습니다]");
+        System.out.println("addBook.jsp로 이동합니다");
+    	return "addBook";
+    }
+    
+    @PostMapping("/add")
+    public String submitAddNewBook(@ModelAttribute("NewBook") Book book) 
+    {
+    	System.out.println("================================================================");
+        System.out.println("[BookController: submitAddNewBook() : 'PostMapping : add'(form태그)로 매핑되어 컨트롤러로 들어왔습니다]");
+    	bookService.setNewBook(book);
+    	System.out.println("form에서 작성한 데이터를 dto에 담고 books.jsp로 리다렉션 합니다");
+    	return "redirect:/books";
+    }
+    
+    @ModelAttribute
+    public void addAttributes(Model model) {model.addAttribute("addTitle", "신규 도서 등록");}
+    
+    
 }
