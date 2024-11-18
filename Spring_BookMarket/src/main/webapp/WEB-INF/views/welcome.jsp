@@ -17,7 +17,7 @@
 			<div class="navbar-header">
 				<a class="navbar-brand" href="<c:url value="/home"/>">Home</a>
 				<a class="navbar-brand" href="<c:url value="/books"/>">Books</a>
-				<a class="navbar-brand" href="<c:url value="/add"/>">Adding Book</a>
+				<a class="navbar-brand" href="<c:url value="/add"/>">Add Book</a>
 			</div>
 		</div>
 	</nav>

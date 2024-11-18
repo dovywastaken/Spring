@@ -7,6 +7,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.MatrixVariable;
@@ -157,6 +158,9 @@ public class BookController {
     
     @ModelAttribute
     public void addAttributes(Model model) {model.addAttribute("addTitle", "신규 도서 등록");}
+    
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {binder.setAllowedFields("bookId", "name", "unitPirce", "author", "description", "publisher", "category", "unitsInstock","totalPages", "releaseDate", "condition");}
     
     
 }
