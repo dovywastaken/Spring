@@ -131,7 +131,7 @@ public class BookController {
             System.out.println("Book: " + bookById.getName() + ", Author: " + bookById.getAuthor());
         }
         model.addAttribute("book", bookById);
-        
+
         System.out.println("[book.jsp로 이동합니다]");
         return "book";
     }

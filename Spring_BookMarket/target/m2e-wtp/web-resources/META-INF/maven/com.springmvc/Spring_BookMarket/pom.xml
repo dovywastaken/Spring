@@ -11,6 +11,7 @@
       <org.springframework-version>5.3.19</org.springframework-version>
       <org.aspectj-version>1.9.9.1</org.aspectj-version>
       <org.slf4j-version>1.7.36</org.slf4j-version>
+      <security.version>5.6.3</security.version>
    </properties>
   
   <name>Spring_BookMarket Maven Webapp</name>
@@ -51,6 +52,18 @@
          <version>${org.springframework-version}</version>
      </dependency>
     
+    
+    <dependency>
+    	<groupId>org.springframework.security</groupId>
+    	<artifactId>spring-security-web</artifactId>
+    	<version>${security.version}</version>
+    </dependency>
+    
+    <dependency>
+    	<groupId>org.springframework.security</groupId>
+    	<artifactId>spring-security-config</artifactId>
+    	<version>${security.version}</version>
+    </dependency>
     
   </dependencies>
   <build>
