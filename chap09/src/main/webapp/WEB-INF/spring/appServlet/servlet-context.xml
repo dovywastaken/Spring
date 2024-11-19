@@ -31,6 +31,16 @@
 	</beans:bean>
 	
 	
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="100000"/>
+		<beans:property name="defaultEncoding" value="utf-8"/>
+		<beans:property name="uploadTempDir" ref="uploadDirResource"/>
+	</beans:bean>
+	
+	<beans:bean id="uploadDirResource" class="org.springframework.core.io.FileSystemResource">
+		<beans:constructor-arg value="c:/upload/" />
+	</beans:bean>
+	
 	<!-- com.springmvc.* 아라고 표시하면 해당 패키지의 모든 클래스의 객체를 만들어서 보관 후 자동주입함 -->
 	<context:component-scan base-package="com.springmvc.*" />
 	<!-- 
@@ -39,8 +49,6 @@
 		3. com.springmvc.controller.HomeController  :클래스 이름이 @Controller가 있어서 만들어짐
 		
 	 -->
-	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<beans:property name="maxUploadSize" value="10240000"></beans:property>
-	</beans:bean>
+	
 	
 </beans:beans>

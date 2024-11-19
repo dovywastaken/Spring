@@ -2,24 +2,23 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.springmvc</groupId>
-  <artifactId>Spring_BookMarket</artifactId>
+  <artifactId>chap09</artifactId>
   <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
   
-  <properties>
+   <properties>
       <java-version>17</java-version>
       <org.springframework-version>5.3.19</org.springframework-version>
       <org.aspectj-version>1.9.9.1</org.aspectj-version>
       <org.slf4j-version>1.7.36</org.slf4j-version>
-      <security.version>5.6.3</security.version>
-      <commons-fileupload-version>1.4</commons-fileupload-version>
-      <commons-io-version>2.11.0</commons-io-version>
    </properties>
-  
-  <name>Spring_BookMarket Maven Webapp</name>
+   
+  <name>chap09 Maven Webapp</name>
   <url>http://maven.apache.org</url>
+  
+  
   <dependencies>
-    
+
     <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
 	<dependency>
 	    <groupId>javax.servlet</groupId>
@@ -27,7 +26,7 @@
 	    <version>1.2</version>
 	</dependency>
 
-          <!-- Spring -->
+
     <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-context</artifactId>
@@ -46,32 +45,25 @@
          <artifactId>spring-webmvc</artifactId>
          <version>${org.springframework-version}</version>
      </dependency>
-    
-    
-    <dependency>
-    	<groupId>org.springframework.security</groupId>
-    	<artifactId>spring-security-web</artifactId>
-    	<version>${security.version}</version>
-    </dependency>
-    
-    <dependency>
-    	<groupId>org.springframework.security</groupId>
-    	<artifactId>spring-security-config</artifactId>
-    	<version>${security.version}</version>
-    </dependency>
-    
-    <!-- File Upload-->
-	<dependency>
-		<groupId>commons-fileupload</groupId>
-		<artifactId>commons-fileupload</artifactId>
-		<version>${commons-fileupload-version}</version>
-	</dependency>    
-    
+     
+     <dependency>
+     	<groupId>commons-fileupload</groupId>
+     	<artifactId>commons-fileupload</artifactId>
+     	<version>1.4</version>
+     </dependency>
+     
+     <dependency>
+     	<groupId>commons-io</groupId>
+     	<artifactId>commons-io</artifactId>
+     	<version>2.11.0</version>
+     </dependency>
   </dependencies>
+  
+  
   <build>
-    <finalName>Spring_BookMarket</finalName>
-    
-        <plugins>
+    <finalName>chap09</finalName>
+
+	<plugins>
             <plugin>
                 <artifactId>maven-eclipse-plugin</artifactId>
                 <version>2.9</version>

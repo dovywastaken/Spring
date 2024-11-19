@@ -11,9 +11,9 @@
 		<nav class="navbar navbar-expand navbar-dark bg-dark">
 			<div class="container">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="<c:url value="/home"/>">Home</a>
-					<a class="navbar-brand" href="<c:url value="/books"/>">Books</a>
-					<a class="navbar-brand" href="<c:url value="/add"/>">Add Book</a>
+				<a class="navbar-brand" href="${pageContext.request.contextPath}/home"> Home</a>
+				<a class="navbar-brand" href="${pageContext.request.contextPath}/books">Books</a>
+				<a class="navbar-brand" href="${pageContext.request.contextPath}/books/add">Add Book</a>
 				</div>
 			</div>
 		</nav>
@@ -25,7 +25,20 @@
 		
 		<div class="container">
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-4">
+				
+					<c:choose>
+						<c:when test="${book.getBookImage() == null}">
+							<img src="<c:url value="/resources/images/${book.bookId}.png" />" style="width: 100%" />
+						</c:when>
+						<c:otherwise>
+							<img src="<c:url value="/resources/images/${book.getBookImage().getOriginalFilename()}" />" style="width: 100%" />
+						</c:otherwise>
+					</c:choose>
+					
+				</div>
+				
+				<div class="col-md-8">
 					<h3>${book.name}</h3>
 					<p>${book.description}</p>
 					<br>

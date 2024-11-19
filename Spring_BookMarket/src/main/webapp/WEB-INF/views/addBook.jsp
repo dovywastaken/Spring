@@ -12,9 +12,9 @@
 	<nav class="navbar navbar-expand navbar-dark bg-dark">
 		<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="<c:url value="/home"/>">Home</a>
-				<a class="navbar-brand" href="<c:url value="/books"/>">Books</a>
-				<a class="navbar-brand" href="<c:url value="/add"/>">Add Book</a>
+				<a class="navbar-brand" href="${pageContext.request.contextPath}/home"> Home</a>
+				<a class="navbar-brand" href="${pageContext.request.contextPath}/books">Books</a>
+				<a class="navbar-brand" href="${pageContext.request.contextPath}/books/add">Add Book</a>
 			</div>
 		</div>
 	</nav>
@@ -26,7 +26,14 @@
 	</div>
 	
 	<div class="container">
-		<form:form modelAttribute="NewBook" class="form-horizontal">
+		<div class="float-right">
+			<form:form action="${pageContext.request.contextPath}/logout" method="POST">
+				<input type="submit" class="btn btn-sm btn-success" value="Logout">
+			</form:form>
+		</div>
+		<br><br>
+	
+		<form:form modelAttribute="NewBook" class="form-horizontal" action="./add?${_csrf.parameterName}=${_csrf.token}" enctype="multipart/form-data">
 			<fieldset>
 			<legend>${addTitle}</legend>
 				<div class="form-group row">
@@ -35,7 +42,6 @@
 						<form:input path="bookId" class="form-control"/>
 					</div>
 				</div>
-				
 				
 				<div class="form-group row">
 					<label class="col-sm-2 control-label">도서명</label>
@@ -99,6 +105,13 @@
 						<form:radiobutton path="condition" value ="New"/> New
 						<form:radiobutton path="condition" value ="Old"/> Old
 						<form:radiobutton path="condition" value ="E-Book"/> E-Book
+					</div>
+				</div>
+				
+				<div class="form-group row">
+					<label class="col-sm-2 control-label">도서이미지</label>
+					<div class="col-sm-7">
+						<form:input path="bookImage" type="file" class="form-control"/>
 					</div>
 				</div>
 				
