@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.MatrixVariable;
@@ -24,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.springmvc.domain.Book;
+import com.springmvc.exception.BookIdException;
+import com.springmvc.exception.CategoryException;
 import com.springmvc.service.BookService;
 
 @Controller
@@ -85,8 +88,8 @@ public class BookController {
         
         System.out.println("URL로 파라미터 받기: " + bookCategory);
         List<Book> booksByCategory = bookService.getBookListByCategory(bookCategory);
-        if (booksByCategory == null) {
-            System.out.println("받아온 ArrayList가 없음");
+        if (booksByCategory == null || booksByCategory.isEmpty()) {
+            throw new CategoryException();
         } else {
             System.out.println("DTO " + booksByCategory.size() + "개 받아옴");
             for (Book book : booksByCategory) {
@@ -198,5 +201,14 @@ public class BookController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {binder.setAllowedFields("bookId", "name", "unitPirce", "author", "description", "publisher", "category", "unitsInstock","totalPages", "releaseDate", "condition", "bookImage");}
     
-    
+    @ExceptionHandler(value= {BookIdException.class})
+    public ModelAndView handleError(HttpServletRequest req, BookIdException exception) 
+    {
+    	ModelAndView mav = new ModelAndView();
+    	mav.addObject("invalidBookId", exception.getBookId());
+    	mav.addObject("exception", exception);
+    	mav.addObject("url", req.getRequestURI() + "?" + req.getQueryString());
+    	mav.setViewName("errorBook");
+    	return mav;
+    }
 }
