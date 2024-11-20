@@ -10,7 +10,7 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
     
     <http use-expressions="true">
-    	<intercept-url pattern="/add"  access="hasRole('ROLE_ADMIN')"/>
+    	<intercept-url pattern="/books/add"  access="hasRole('ROLE_ADMIN')"/>
         <form-login login-page="/login"
         			default-target-url="/add"
         			authentication-failure-url="/loginfailed"

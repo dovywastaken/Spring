@@ -38,9 +38,10 @@
                 			<img src="<c:url value='/resources/images/${book.bookImage.originalFilename}'/>" style="width: 60%"/>
                 		</c:otherwise>
                 	</c:choose>
-                    <h3 class="text-center">${book.name}</h3>
+                	<br>
+                    <h3 class="text-left">${book.name}</h3>
                     <p class="text-left">${book.author}</p>
-                    <br><b>${book.publisher} | ${book.releaseDate}</b>
+                    <b>${book.publisher} | ${book.releaseDate}</b>
                     <p align="left">${fn:substring(book.description, 0, 100)}...</p>
                     <p>${book.unitPrice}원</p>
                     <p><a href="${pageContext.request.contextPath}/books/book?id=${book.bookId}" class="btn btn-secondary" role="button">상세정보 &raquo;</a></p>

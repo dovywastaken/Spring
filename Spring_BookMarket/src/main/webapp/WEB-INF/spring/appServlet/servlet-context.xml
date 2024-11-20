@@ -30,7 +30,6 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	
 	<!-- com.springmvc.* 아라고 표시하면 해당 패키지의 모든 클래스의 객체를 만들어서 보관 후 자동주입함 -->
 	<context:component-scan base-package="com.springmvc.*" />
 	<!-- 
@@ -42,5 +41,17 @@
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="maxUploadSize" value="10240000"></beans:property>
 	</beans:bean>
+	
+	<interceptors>
+		<beans:bean class="com.springmvc.interceptor.MonitoringInterceptor" />
+		<beans:bean class="com.springmvc.interceptor.AuditingInterceptor" />
+	</interceptors>
+	
+	
+	<beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<beans:property name="basename" value="messages"/>
+		<beans:property name="defaultEncoding" value="UTF-8"></beans:property>
+	</beans:bean>
+	
 	
 </beans:beans>
