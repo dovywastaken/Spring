@@ -6,10 +6,13 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +31,8 @@ import com.springmvc.domain.Book;
 import com.springmvc.exception.BookIdException;
 import com.springmvc.exception.CategoryException;
 import com.springmvc.service.BookService;
+import com.springmvc.validator.BookValidator;
+import com.springmvc.validator.UnitsInstockValidator;
 
 @Controller
 @RequestMapping("/books")
@@ -35,6 +40,10 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+    
+    @Autowired
+    private BookValidator bookValidator;
+    //private UnitsInstockValidator unitsInstockValidator;
 
     @GetMapping
     public String requestBookList(Model model) {
@@ -153,53 +162,75 @@ public class BookController {
     	return "addBook";
     }
     
+    /*
     @PostMapping("/add")
-    public String submitAddNewBook(@ModelAttribute("NewBook") Book book, HttpServletRequest req) 
-    {
-    	System.out.println("================================================================");
+    public String submitAddNewBook(@Valid @ModelAttribute("NewBook") Book book, HttpServletRequest req, BindingResult result) {
+        // ...
+    }
+
+    */
+    
+    @PostMapping("/add")
+    public String submitAddNewBook(@Valid @ModelAttribute("NewBook") Book book, BindingResult result, HttpServletRequest req) {
+        System.out.println("================================================================");
         System.out.println("[BookController: submitAddNewBook() : 'PostMapping : add'(form태그)로 매핑되어 컨트롤러로 들어왔습니다]");
-    	
+        
         String save = req.getServletContext().getRealPath("/resources/images");
-        if(save == null)
-        	System.out.println("경로 불러오기 실패");
-        else {System.out.println("저장 경로" + save);}
+        if (save == null) {
+            System.out.println("경로 불러오기 실패");
+        } else {
+            System.out.println("저장 경로" + save);
+        }
+        
+        if (result.hasErrors()) {
+            return "addBook";
+        }
         
         MultipartFile bookImage = book.getBookImage();
-        if(bookImage == null)
-        	System.out.println("dto에서 이미지 불러오기 실패");
-        else {System.out.println("dto에서 불러온 책 " + bookImage);}
+        if (bookImage == null) {
+            System.out.println("dto에서 이미지 불러오기 실패");
+        } else {
+            System.out.println("dto에서 불러온 책 " + bookImage);
+        }
         
         String saveName = bookImage.getOriginalFilename();
-        if(saveName == null)
-        	System.out.println("파일 이름 불러오기 실패");
-        else {System.out.println("DTO에서 불러온 파일 이름은 " + saveName);}
+        if (saveName == null) {
+            System.out.println("파일 이름 불러오기 실패");
+        } else {
+            System.out.println("DTO에서 불러온 파일 이름은 " + saveName);
+        }
         
         File saveFile = new File(save, saveName);
-        if(saveFile == null)
-        	System.out.println("saveFile 실패" + saveFile);
-        else {System.out.println("saveFile 성공" + saveFile);}
+        if (saveFile == null) {
+            System.out.println("saveFile 실패" + saveFile);
+        } else {
+            System.out.println("saveFile 성공" + saveFile);
+        }
         
-        if(bookImage != null && !bookImage.isEmpty()) 
-        {
-        	try 
-        	{
-        		bookImage.transferTo(saveFile);
-        	}catch(Exception e) 
-        	{
-        		throw new RuntimeException("도서 이미지 업로드가 실패하였습니다", e);
-        	}
+        if (bookImage != null && !bookImage.isEmpty()) {
+            try {
+                bookImage.transferTo(saveFile);
+            } catch (Exception e) {
+                throw new RuntimeException("도서 이미지 업로드가 실패하였습니다", e);
+            }
         }
         
         bookService.setNewBook(book);
-    	System.out.println("form에서 작성한 데이터를 dto에 담고 books.jsp로 리다렉션 합니다");
-    	return "redirect:/books";
+        System.out.println("form에서 작성한 데이터를 dto에 담고 books.jsp로 리다렉션 합니다");
+        return "redirect:/books";
     }
+
     
     @ModelAttribute
     public void addAttributes(Model model) {model.addAttribute("addTitle", "신규 도서 등록");}
     
     @InitBinder
-    public void initBinder(WebDataBinder binder) {binder.setAllowedFields("bookId", "name", "unitPirce", "author", "description", "publisher", "category", "unitsInstock","totalPages", "releaseDate", "condition", "bookImage");}
+    public void initBinder(WebDataBinder binder) 
+    {
+    	//binder.setValidator((Validator) unitsInstockValidator);
+    	binder.setValidator(bookValidator);
+    	binder.setAllowedFields("bookId", "name", "unitPrice", "author", "description", "publisher", "category", "unitsInstock","totalPages", "releaseDate", "condition", "bookImage");
+    }
     
     @ExceptionHandler(value= {BookIdException.class})
     public ModelAndView handleError(HttpServletRequest req, BookIdException exception) 

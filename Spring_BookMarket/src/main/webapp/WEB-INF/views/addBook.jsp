@@ -33,6 +33,11 @@
 				<input type="submit" class="btn btn-sm btn-success" value="Logout">
 			</form:form>
 		</div>
+		
+		<div class="float-right" style="padding-right:30px">
+			<a href="?language=ko">한국어</a> | <a href="?language=en">English</a>
+		</div>
+		
 		<br><br>
 	
 		<form:form modelAttribute="NewBook" class="form-horizontal" action="./add?${_csrf.parameterName}=${_csrf.token}" enctype="multipart/form-data">
@@ -43,6 +48,9 @@
 					<div class="col-sm-3">
 						<form:input path="bookId" class="form-control"/>
 					</div>
+					<div class="col-sm-6">
+						<form:errors path="bookId" class="text-danger"/>
+					</div>
 				</div>
 				
 				<div class="form-group row">
@@ -50,12 +58,18 @@
 					<div class="col-sm-3">
 						<form:input path="name" class="form-control"/>
 					</div>
+					<div class="col-sm-6">
+						<form:errors path="name" class="text-danger"/>
+					</div>
 				</div>
 				
 				<div class="form-group row">
 					<label class="col-sm-2 control-label"><spring:message code="addBook.form.unitPrice.label"/></label>
 					<div class="col-sm-3">
 						<form:input path="unitPrice" class="form-control"/>
+					</div>
+					<div class="col-sm-6">
+						<form:errors path="unitPrice" class="text-danger"/>
 					</div>
 				</div>
 				
@@ -92,6 +106,11 @@
 					<div class="col-sm-3">
 						<form:input path="unitsInstock" class="form-control"/>
 					</div>
+					<div class="col-sm-6">
+						<form:errors path="unitsInstock" class="text-danger"/>
+					</div>
+					
+					
 				</div>
 				
 				<div class="form-group row">

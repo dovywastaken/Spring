@@ -15,7 +15,7 @@
 		 2. @annotation을 사용할 수 있게 해줌 -->
 
 	<!-- 핸들러매핑과 핸들러아답터를 자동으로 객체생성함 -->
-	<annotation-driven enable-matrix-variables="true"/>
+	<annotation-driven enable-matrix-variables="true" validator="validator"/>
 
 	<!-- 디스패쳐서블릿은 관여하지말고 그냥 통과시켜~ -->
 	<!-- css,image,js와 같은 공유되는 파일의 위치를 정하고 MVC외 처리를 실시함
@@ -45,13 +45,33 @@
 	<interceptors>
 		<beans:bean class="com.springmvc.interceptor.MonitoringInterceptor" />
 		<beans:bean class="com.springmvc.interceptor.AuditingInterceptor" />
+		<beans:bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<beans:property name="paramName" value="language"></beans:property>
+		</beans:bean>
 	</interceptors>
 	
 	
 	<beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<beans:property name="basename" value="messages"/>
-		<beans:property name="defaultEncoding" value="UTF-8"></beans:property>
+		<beans:property name="defaultEncoding" value="UTF-8"/>
 	</beans:bean>
 	
+	<beans:bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<beans:property name="defaultLocale" value="ko"/>
+	</beans:bean>
+	
+	<beans:bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<beans:property name="validationMessageSource" ref="messageSource"/>
+	</beans:bean>
+	
+	<beans:bean id="unitsInstockValidator" class="com.springmvc.validator.UnitsInstockValidator"/>
+	
+	<beans:bean id="bookValidator" class="com.springmvc.validator.BookValidator">
+		<beans:property name="springValidators">
+			<beans:set>
+				<beans:ref bean="unitsInstockValidator"/>
+			</beans:set>
+		</beans:property>
+	</beans:bean>
 	
 </beans:beans>

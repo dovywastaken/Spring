@@ -1,11 +1,26 @@
 package com.springmvc.domain;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import com.springmvc.validator.BookId;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class Book 
 {
+	@BookId
+	@Pattern(regexp="ISBN[1-9]+", message="{Pattern.NewBook.bookId}")
 	private String bookId;
+	
+	@Size(min=4, max=50, message="{Size.NewBook.name}")
 	private String name;
+	
+	@Min(value=0, message="{Min.NewBook.unitPrice}")
+	@Digits(integer=8, fraction=2, message="{Digits.NewBook.unitPrice}")
+	@NotNull(message="{NotNull.NewBook.unitPrice}")
 	private int unitPrice;
 	private String author;
 	private String description;
