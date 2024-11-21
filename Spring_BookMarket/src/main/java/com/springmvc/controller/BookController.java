@@ -43,7 +43,6 @@ public class BookController {
     
     @Autowired
     private BookValidator bookValidator;
-    //private UnitsInstockValidator unitsInstockValidator;
 
     @GetMapping
     public String requestBookList(Model model) {
@@ -226,6 +225,7 @@ public class BookController {
     
     @InitBinder
     public void initBinder(WebDataBinder binder) 
+    //WebDataBinder는 컨트롤러로 넘어오는 데이터를 특정 객체 예)Book 에 바인딩하고 등록된 Validator를 사용해서 유효성 검사를 수행해요
     {
     	//binder.setValidator((Validator) unitsInstockValidator);
     	binder.setValidator(bookValidator);
