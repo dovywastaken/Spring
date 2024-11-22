@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Spring_BookMarket</title>
 <link href="/Spring_BookMarket/resources/css/bootstrap.min.css" rel="stylesheet">
+<script src="<c:url value="/resources/js/controllers.js"/>"></script>
 </head>
 <body>
 	<nav class="navbar navbar-expand navbar-dark bg-dark">
@@ -36,14 +38,17 @@
 					<th>소계</th>
 					<th>비고</th>
 				</tr>
-				<c:forEach items="${cart.cartItems}" var="item">
-					<tr>
-						<td>${item.value.book.bookId}-${item.value.book.name}</td>
-						<td>${item.value.book.unitPrice}</td>
-						<td>${item.value.quantity}</td>
-						<td>${item.value.totalPrice}</td>
-					</tr>
-				</c:forEach>
+				<form:form name="removeForm" method="put">
+					<c:forEach items="${cart.cartItems}" var="item">
+						<tr>
+							<td>${item.value.book.bookId}-${item.value.book.name}</td>
+							<td>${item.value.book.unitPrice}</td>
+							<td>${item.value.quantity}</td>
+							<td>${item.value.totalPrice}</td>
+							<td><a href="javascript:removeFromCart('../cart/remove/${item.value.book.bookId}')" class="badge badge-danger">삭제</a> </td>
+						</tr>
+					</c:forEach>
+				</form:form>
 				<tr>
 					<th></th>
 					<th></th>

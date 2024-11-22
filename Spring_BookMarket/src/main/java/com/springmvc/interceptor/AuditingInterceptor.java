@@ -33,7 +33,7 @@ public class AuditingInterceptor extends HandlerInterceptorAdapter
 	{
 		if(req.getRequestURI().endsWith("books/add")) 
 		{
-			logger.warn(String.format("신규등록 도서 ID : %s, 접근자 : %s, 접근시각 : %s", bookId, user, getCurrentTime()));
+			//logger.warn(String.format("신규등록 도서 ID : %s, 접근자 : %s, 접근시각 : %s", bookId, user, getCurrentTime()));
 		}
 	}
 	

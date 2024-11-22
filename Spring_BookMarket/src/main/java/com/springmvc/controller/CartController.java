@@ -69,6 +69,8 @@ public class CartController
 	@ResponseStatus(value=HttpStatus.NO_CONTENT)
 	public void addCartByNewItem(@PathVariable String bookId, HttpServletRequest req) 
 	{
+		System.out.println("================================================================");
+        System.out.println("[CartController: /add/{bookId}로 매핑되어 컨트롤러로 들어왔습니다]");
 		//장바구니 ID인 세션 ID 가져오기
 		String sessionId = req.getSession(true).getId();
 		Cart cart = cartService.read(sessionId);
@@ -83,13 +85,6 @@ public class CartController
 		cartService.update(sessionId, cart);
 	}
 	
-	
-	
-	
-	
-	
-	/*
-	
 	@PutMapping("/remove/{bookId}")
 	@ResponseStatus(value=HttpStatus.NO_CONTENT)
 	public void removeCartByItem(@PathVariable String bookId, HttpServletRequest req) 
@@ -97,11 +92,8 @@ public class CartController
 		//장바구니 ID인 세션 ID 가져오기
 		String sessionId = req.getSession(true).getId();
 		Cart cart = cartService.read(sessionId);
-		if(cart == null) 
-		{
-			cart = cartService.create(new Cart(sessionId));
-			Book book = bookService.getBookById(bookId);
-		}
+		if(cart == null) {cart = cartService.create(new Cart(sessionId));}
+		Book book = bookService.getBookById(bookId);
 		if(book == null) 
 		{
 			throw new IllegalArgumentException(new BookIdException(bookId));
@@ -109,7 +101,6 @@ public class CartController
 		cart.removeCartItems(new CartItem(book));
 		cartService.update(sessionId,cart);
 	}
-	*/
 	
 	
 }
