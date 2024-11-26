@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +33,15 @@ public class CartController
 	
 	@Autowired
 	private BookService bookService;
+	
+	@DeleteMapping("/{cartId}")
+	@ResponseStatus(value=HttpStatus.NO_CONTENT)
+	public void deleteCartList(@PathVariable(value="cartId") String cartId) 
+	{
+		cartService.delete(cartId);
+	}
+	
+	
 	
 	@GetMapping
 	public String requestCartId(HttpServletRequest req) 

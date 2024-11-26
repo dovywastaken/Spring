@@ -12,3 +12,10 @@ function removeFromCart(action)
 	document.removeForm.submit();
 	window.location.reload();
 }
+
+
+function clearCart()
+{
+	document.clearForm.submit();
+	window.location.reload();
+}

@@ -27,6 +27,10 @@
 	</div>
 	<div class="container">
 		<div>
+			<form:form name="clearForm" method="delete">
+				<a href="javascript:clearCart()" class="btn btn-danger pull-left">삭제하기</a>
+			</form:form>
+		
 			<a href="#" class="btn btn-success float-right">주문하기</a>
 		</div>
 		<div style="padding-top: 50px">

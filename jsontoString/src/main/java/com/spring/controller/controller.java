@@ -198,8 +198,6 @@ public class controller
 			String longName = eighth.getString("longName");
 			String shortName = eighth.getString("shortName");
 			
-			//System.out.println("longname의 값은 : " + longName);
-			//System.out.println("shortname의 값은 : " + shortName);
 			
 			
 			String x = first.getString("x"); //키 값을 이용해서 x에 해당하는 value를 저장

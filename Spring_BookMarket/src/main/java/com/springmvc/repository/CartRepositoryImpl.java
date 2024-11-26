@@ -45,6 +45,16 @@ public class CartRepositoryImpl implements CartRepository
 		}
 		listOfCarts.put(cartId, cart);
 	}
+
+	@Override
+	public void delete(String cartId) 
+	{
+		if(!listOfCarts.keySet().contains(cartId)) 
+		{
+			throw new IllegalArgumentException(String.format("장바구니 목록을 삭제할 수 없습니다. 장바구니 id(%)가 존재하지 않습니다", cartId));
+		}
+		listOfCarts.remove(cartId);
+	}
 	
 	
 	

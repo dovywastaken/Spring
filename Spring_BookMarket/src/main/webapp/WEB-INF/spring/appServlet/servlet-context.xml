@@ -3,11 +3,15 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:webflow="http://www.springframework.org/schema/webflow-config"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans 
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context 
-		http://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/webflow-config
+		http://www.springframework.org/schema/webflow-config/spring-webflow-config.xsd">
+	
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -24,12 +28,14 @@
 		 -->
 	<resources mapping="/resources/**" location="/resources/" />
 
-	<!-- 뷰리졸브 객체 add라는 문자열을 받으면 /WEB-INF/views/add.jsp 라는 경로를 반환해준다 -->
-	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<beans:property name="prefix" value="/WEB-INF/views/" />
-		<beans:property name="suffix" value=".jsp" />
-	</beans:bean>
-	
+	<interceptors>
+		<beans:bean class="com.springmvc.interceptor.MonitoringInterceptor" />
+		<beans:bean class="com.springmvc.interceptor.AuditingInterceptor" />
+		<beans:bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<beans:property name="paramName" value="language"></beans:property>
+		</beans:bean>
+	</interceptors>
+
 	<!-- com.springmvc.* 아라고 표시하면 해당 패키지의 모든 클래스의 객체를 만들어서 보관 후 자동주입함 -->
 	<context:component-scan base-package="com.springmvc.*" />
 	<!-- 
@@ -38,18 +44,22 @@
 		3. com.springmvc.controller.HomeController  :클래스 이름이 @Controller가 있어서 만들어짐
 		
 	 -->
+	
+	<webflow:flow-registry id="flowRegistry">
+		<webflow:flow-location path="/WEB-INF/flows/order/order-flow.xml" id="order"/>
+	</webflow:flow-registry>
+	
+	<webflow:flow-executor id="flowExecutor" flow-registry="flowRegistry"/>
+
+	<!-- 뷰리졸브 객체 add라는 문자열을 받으면 /WEB-INF/views/add.jsp 라는 경로를 반환해준다 -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="maxUploadSize" value="10240000"></beans:property>
 	</beans:bean>
-	
-	<interceptors>
-		<beans:bean class="com.springmvc.interceptor.MonitoringInterceptor" />
-		<beans:bean class="com.springmvc.interceptor.AuditingInterceptor" />
-		<beans:bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-			<beans:property name="paramName" value="language"></beans:property>
-		</beans:bean>
-	</interceptors>
-	
 	
 	<beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 		<beans:property name="basename" value="messages"/>
@@ -72,6 +82,14 @@
 				<beans:ref bean="unitsInstockValidator"/>
 			</beans:set>
 		</beans:property>
+	</beans:bean>
+	
+	<beans:bean id="flowHandlerMapping" class="org.springframework.webflow.mvc.servlet.FlowHandlerMapping">
+		<beans:property name="flowRegistry" ref="flowRegistry"/>
+	</beans:bean>
+	
+	<beans:bean id="flowHandlerAdapter" class="org.springframework.webflow.mvc.servlet.FlowHandlerAdapter">
+		<beans:property name="flowExecutor" ref="flowExecutor"/>
 	</beans:bean>
 	
 </beans:beans>

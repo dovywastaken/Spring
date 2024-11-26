@@ -1,5 +1,7 @@
 package com.springmvc.domain;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -9,8 +11,10 @@ import com.springmvc.validator.BookId;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class Book 
+public class Book implements Serializable
 {
+	private static final long serialVersionUID = -7715651009026349175L;
+	
 	@BookId
 	@Pattern(regexp="ISBN[1-9]+", message="{Pattern.NewBook.bookId}")
 	private String bookId;
