@@ -10,35 +10,17 @@
 <script src="${pageContext.request.contextPath}/resources/js/controllers.js"></script>
 </head>
 <body>
-<!--  
-		<nav class="navbar navbar-expand navbar-dark bg-dark">
-			<div class="container">
-				<div class="navbar-header">
-				<a class="navbar-brand" href="${pageContext.request.contextPath}/home"> Home</a>
-				<a class="navbar-brand" href="${pageContext.request.contextPath}/books">Books</a>
-				<a class="navbar-brand" href="${pageContext.request.contextPath}/books/add">Add Book</a>
-				</div>
-			</div>
-		</nav>
-		<div class="jumbotron">
-			<div class="container">
-				<h1 class="display-3">도서 정보</h1>
-			</div>
-		</div>
-		-->
 		<div class="container">
 			<div class="row">
 				<div class="col-md-4">
-				
 					<c:choose>
 						<c:when test="${book.getBookImage() == null}">
-							<img src="<c:url value="/resources/images/${book.bookId}.png" />" style="width: 100%" />
+							<img src="${pageContext.request.contextPath}/resources/images/${book.bookId}.png" style="width: 100%" />
 						</c:when>
 						<c:otherwise>
-							<img src="<c:url value="/resources/images/${book.getBookImage().getOriginalFilename()}" />" style="width: 100%" />
+							<img src="${pageContext.request.contextPath}/resources/images/${book.bookId}.png" style="width: 100%" />
 						</c:otherwise>
 					</c:choose>
-					
 				</div>
 				
 				<div class="col-md-8">
@@ -60,8 +42,6 @@
 					</form:form>
 				</div>
 			</div>
-			<hr>
-			<!--  <footer><p>&copy; BookMarket</p></footer>-->
 		</div>
 </body>
 </html>

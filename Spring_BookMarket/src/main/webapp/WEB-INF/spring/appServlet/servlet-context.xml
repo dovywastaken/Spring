@@ -12,20 +12,8 @@
 						http://www.springframework.org/schema/webflow-config
 						http://www.springframework.org/schema/webflow-config/spring-webflow-config.xsd">
 	
-
-	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
-	
-	<!-- 1.핸들러매피오가 핸들러 어댑터를 자동으로 객체생성함
-		 2. @annotation을 사용할 수 있게 해줌 -->
-
-	<!-- 핸들러매핑과 핸들러아답터를 자동으로 객체생성함 -->
 	<annotation-driven enable-matrix-variables="true" validator="validator"/>
 
-	<!-- 디스패쳐서블릿은 관여하지말고 그냥 통과시켜~ -->
-	<!-- css,image,js와 같은 공유되는 파일의 위치를 정하고 MVC외 처리를 실시함
-		디스패쳐서블릿은 관여하지말고 그냥 통과시켜~
-		http://localhost:8080/ch0201/resources/images/p1234.jpg
-		 -->
 	<resources mapping="/resources/**" location="/resources/" />
 
 	<interceptors>
@@ -36,17 +24,9 @@
 		</beans:bean>
 	</interceptors>
 
-	<!-- com.springmvc.* 아라고 표시하면 해당 패키지의 모든 클래스의 객체를 만들어서 보관 후 자동주입함 -->
 	<context:component-scan base-package="com.springmvc.*" />
-	<!-- 
-		1. 핸들러매핑
-		2. 뷰리졸브
-		3. com.springmvc.controller.HomeController  :클래스 이름이 @Controller가 있어서 만들어짐
-		
-	 -->
 	
-	<webflow:flow-registry id="flowRegistry"
-						flow-builder-services="flowBuilderServices">
+	<webflow:flow-registry id="flowRegistry" flow-builder-services="flowBuilderServices">
 		<webflow:flow-location path="/WEB-INF/flows/order/order-flow.xml" id="order"/>
 	</webflow:flow-registry>
 	
@@ -54,7 +34,6 @@
 
 	<webflow:flow-builder-services id="flowBuilderServices" view-factory-creator="viewFactoryCreator"/>
 
-	<!-- 뷰리졸브 객체 add라는 문자열을 받으면 /WEB-INF/views/add.jsp 라는 경로를 반환해준다 -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
@@ -95,7 +74,7 @@
 		<beans:property name="flowExecutor" ref="flowExecutor"/>
 	</beans:bean>
 	
-		<!--Tiles  --> 
+	<!--Tiles  --> 
 	<beans:bean id="tilesViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 		<beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
 		<beans:property name="order" value="1"/>
@@ -107,6 +86,18 @@
 	
 	<beans:bean id="viewFactoryCreator" class="org.springframework.webflow.mvc.builder.MvcViewFactoryCreator">
 		<beans:property name="viewResolvers" ref="tilesViewResolver"/>
+	</beans:bean>
+
+	<!-- MYSQL -->
+	<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<beans:property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+		<beans:property name="url" value="jdbc:mysql://localhost:3306/springmvcDB?serverTimezone=UTC"/>
+		<beans:property name="username" value="root"/>
+		<beans:property name="password" value="1234"/>
+	</beans:bean>
+
+	<beans:bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<beans:property name="dataSource" ref="dataSource"/>	
 	</beans:bean>
 
 </beans:beans>

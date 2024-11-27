@@ -1,11 +1,16 @@
 package com.springmvc.repository;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.springmvc.domain.Book;
 import com.springmvc.exception.BookIdException;
@@ -14,7 +19,36 @@ import com.springmvc.exception.BookIdException;
 public class BookRepositoryImpl implements BookRepository 
 {
     private List<Book> listOfBooks = new ArrayList<Book>();
+    private JdbcTemplate template; //DB와 상호작용하는 객체
+    
+    @Autowired
+    public void setJdbctemplate(DataSource dataSource) //DataSource 객체가 DB연결 정보 가짐
+    {
+    	System.out.println("+++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("[setJdbctemplate: DB연결]");
+        if (dataSource == null) {
+            System.out.println("[setJdbcTemplate: Error] dataSource is null.");
+            throw new IllegalArgumentException("DataSource must not be null.");
+        }
+    	this.template = new JdbcTemplate(dataSource);
+    	
+    	if (this.template == null) {
+    	    System.out.println("[setJdbcTemplate: Error] JdbcTemplate initialization failed.");
+    	} else {
+    	    System.out.println("[setJdbcTemplate: Success] JdbcTemplate initialized successfully.");
+    	}
+    	try (Connection connection = dataSource.getConnection()) {
+    	    if (connection != null && !connection.isClosed()) {
+    	        System.out.println("[setJdbcTemplate: Success] Connection to DB is valid.");
+    	    }
+    	} catch (Exception e) {
+    	    System.out.println("[setJdbcTemplate: Error] Failed to validate DataSource connection.");
+    	    e.printStackTrace();
+    	}
 
+    	System.out.println("[setJdbctemplate: DB연결]");
+    }
+    
     public BookRepositoryImpl() 
     {
         System.out.println("+++++++++++++++++++++++++++++++++++++++++");
@@ -57,15 +91,23 @@ public class BookRepositoryImpl implements BookRepository
     {
         System.out.println("+++++++++++++++++++++++++++++++++++++++++");
         System.out.println("[BookRepositoryImpl: getAllBookList() 호출됨]");
+        
+        /*
         List<Book> books = listOfBooks;
         if (books == null || books.isEmpty()) {
             System.out.println("반환할 책 리스트가 없습니다.");
         } else {
             System.out.println(books.size() + "개의 책 리스트 반환됨.");
-        }
+        } */
+        
+        String SQL = "select * from book";
+        System.out.println("SQL 문을 담았습니다");
+        List<Book> listOfBooks = template.query(SQL, new BookRowMapper());
+        System.out.println("listOfBooks : "+listOfBooks.size() + "개");
+
         System.out.println("[BookRepositoryImpl: getAllBookList() 종료]");
         System.out.println("+++++++++++++++++++++++++++++++++++++++++");
-        return books;
+        return listOfBooks;
     }
 
     @Override
@@ -74,6 +116,7 @@ public class BookRepositoryImpl implements BookRepository
         System.out.println("+++++++++++++++++++++++++++++++++++++++++");
         System.out.println("[BookRepositoryImpl: getBookListByCategory() 호출됨]");
         List<Book> booksByCategory = new ArrayList<Book>();
+        /*
         for (int i = 0; i < listOfBooks.size(); i++) 
         {
             Book book = listOfBooks.get(i);
@@ -86,6 +129,11 @@ public class BookRepositoryImpl implements BookRepository
         if (booksByCategory.isEmpty()) {
             System.out.println("BookRepositoryImpl: 해당 카테고리에 책이 없습니다.");
         }
+        */
+        
+        String SQL = "select * from book where b_category like '%" + category + "%'";
+        booksByCategory = template.query(SQL, new BookRowMapper());
+        
         System.out.println("[BookRepositoryImpl: getBookListByCategory() 종료]");
         System.out.println("+++++++++++++++++++++++++++++++++++++++++");
         return booksByCategory;
@@ -99,6 +147,7 @@ public class BookRepositoryImpl implements BookRepository
         Set<Book> booksByPublisher = new HashSet<Book>();
         Set<Book> booksByCategory = new HashSet<Book>();
         
+        /*
         Set<String> booksByFilter = filter.keySet();
         
         if (booksByFilter.contains("publisher")) 
@@ -129,6 +178,29 @@ public class BookRepositoryImpl implements BookRepository
         }
         
         booksByCategory.retainAll(booksByPublisher);
+        
+        */
+        Set<String> criterias = filter.keySet();
+        if(criterias.contains("publisher")) 
+        {
+        	for(int j=0; j< filter.get("publisher").size(); j++) 
+        	{
+        		String publisherName = filter.get("publisher").get(j);
+        		String SQL = "select * from book where b_publisher like '%" + publisherName + "%'";
+        		booksByPublisher.addAll(template.query(SQL, new BookRowMapper()));
+        	}
+       	}
+        
+        if(criterias.contains("category")) 
+        {
+        	for(int i = 0; i<filter.get("category").size(); i++) 
+        	{
+        		String category = filter.get("category").get(i);
+        		String SQL = "select * from book where b_category like '%" + category + "%'";
+        		booksByCategory.addAll(template.query(SQL, new BookRowMapper()));
+        	}
+        }
+        booksByCategory.retainAll(booksByPublisher);
         System.out.println("[BookRepositoryImpl: getBookListByFilter() 종료]");
         System.out.println("+++++++++++++++++++++++++++++++++++++++++");
         return booksByCategory;
@@ -140,6 +212,8 @@ public class BookRepositoryImpl implements BookRepository
         System.out.println("+++++++++++++++++++++++++++++++++++++++++");
         System.out.println("[BookRepositoryImpl: getBookById() 호출됨]");
         Book bookInfo = null;
+        
+        /*
         for (int i = 0; i < listOfBooks.size(); i++) 
         {
             Book book = listOfBooks.get(i);
@@ -149,6 +223,14 @@ public class BookRepositoryImpl implements BookRepository
                 System.out.println("BookRepositoryImpl: 도서 ID가 " + bookId + "인 책 찾음: " + book.getName());
                 break;
             }
+        }*/
+        
+        String SQL = "select count(*) from book where b_bookId=?";
+        int rowCount = template.queryForObject(SQL, Integer.class, bookId);
+        if(rowCount != 0) 
+        {
+        	SQL = "select * from book where b_bookId=?";
+        	bookInfo = template.queryForObject(SQL, new Object[] {bookId}, new BookRowMapper());
         }
         if (bookInfo == null) 
         {
