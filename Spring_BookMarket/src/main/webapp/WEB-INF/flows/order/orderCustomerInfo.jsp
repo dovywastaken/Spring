@@ -11,25 +11,6 @@
 	rel="stylesheet">
 </head>
 <body>
-	<nav class="navbar navbar-expand navbar-dark bg-dark">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand"
-					href="${pageContext.request.contextPath}/home"> Home</a> <a
-					class="navbar-brand"
-					href="${pageContext.request.contextPath}/books">Books</a> <a
-					class="navbar-brand"
-					href="${pageContext.request.contextPath}/books/add">Add Book</a>
-			</div>
-		</div>
-	</nav>
-
-	<div class="jumbotron">
-		<div class="container">
-			<h1 class="display-3">고객정보</h1>
-		</div>
-	</div>
-	
 	<div class="container">
 		<form:form modelAttribute="order.customer" class="form-horizontal">
 			<fieldset>

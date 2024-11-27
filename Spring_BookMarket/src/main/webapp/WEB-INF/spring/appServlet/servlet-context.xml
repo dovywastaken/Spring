@@ -45,13 +45,14 @@
 		
 	 -->
 	
-	<webflow:flow-registry id="flowRegistry">
+	<webflow:flow-registry id="flowRegistry"
+						flow-builder-services="flowBuilderServices">
 		<webflow:flow-location path="/WEB-INF/flows/order/order-flow.xml" id="order"/>
 	</webflow:flow-registry>
 	
 	<webflow:flow-executor id="flowExecutor" flow-registry="flowRegistry"/>
 
-
+	<webflow:flow-builder-services id="flowBuilderServices" view-factory-creator="viewFactoryCreator"/>
 
 	<!-- 뷰리졸브 객체 add라는 문자열을 받으면 /WEB-INF/views/add.jsp 라는 경로를 반환해준다 -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -102,6 +103,10 @@
 
 	<beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 		<beans:property name="definitions" value="/WEB-INF/tiles/tiles.xml"/>
+	</beans:bean>
+	
+	<beans:bean id="viewFactoryCreator" class="org.springframework.webflow.mvc.builder.MvcViewFactoryCreator">
+		<beans:property name="viewResolvers" ref="tilesViewResolver"/>
 	</beans:bean>
 
 </beans:beans>
