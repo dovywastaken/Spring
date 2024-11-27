@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix ="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -11,6 +11,7 @@
 <link href="/Spring_BookMarket/resources/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+<!-- 
 	<nav class="navbar navbar-expand navbar-dark bg-dark">
 		<div class="container">
 			<div class="navbar-header">
@@ -26,7 +27,7 @@
 			<h1 class="display-3"><spring:message code="addBook.form.title.label"/></h1>
 		</div>
 	</div>
-	
+	 -->
 	<div class="container">
 		<div class="float-right">
 			<form:form action="${pageContext.request.contextPath}/logout" method="POST">
@@ -144,9 +145,7 @@
 			</fieldset>
 		</form:form>
 		<hr>
-		<footer>
-			<p>&copy; BookMarket</p>
-	</footer>
+		<!-- <footer> <p>&copy; BookMarket</p></footer> -->
 	</div>
 </body>
 </html>

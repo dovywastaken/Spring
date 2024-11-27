@@ -10,6 +10,8 @@
 <script src="<c:url value="/resources/js/controllers.js"/>"></script>
 </head>
 <body>
+
+<!-- 
 	<nav class="navbar navbar-expand navbar-dark bg-dark">
 		<div class="container">
 			<div class="navbar-header">
@@ -19,12 +21,13 @@
 			</div>
 		</div>
 	</nav>
-	
+
 	<div class="jumbotron">
 		<div class="container">
 			<h1 class="display-3">장바구니</h1>
 		</div>
 	</div>
+		 -->
 	<div class="container">
 		<div>
 			<form:form name="clearForm" method="delete">
@@ -64,9 +67,11 @@
 			<a href="<c:url value="/books"/>" class="btn btn-secondary">&laquo; 쇼핑 계속하기</a>
 		</div>
 		<hr>
+		<!-- 
 		<footer>
 			<p>&copy; BookMarket
 		</footer>
+		 -->
 	</div>
 </body>
 </html>

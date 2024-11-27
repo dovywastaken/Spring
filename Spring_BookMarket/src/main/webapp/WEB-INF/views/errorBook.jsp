@@ -8,6 +8,7 @@
 <link href="/Spring_BookMarket/resources/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+<!--
 	<nav class="navbar navbar-expand navbar-dark bg-dark">
 		<div class="container">
 			<a class="navbar-brand" href="../home">Home</a>
@@ -22,7 +23,7 @@
 			</h2>
 		</div>
 	</div>
-	
+	  -->
 	<div class="container">
 		<p>${url}</p>
 		<p>${exception}</p>

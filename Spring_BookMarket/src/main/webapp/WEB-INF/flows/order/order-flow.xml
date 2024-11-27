@@ -37,7 +37,7 @@
 							
 	<view-state id="orderFinished" model="order">
 		<transition to="endState"/>
-	</view-state>					
+	</view-state>
 							
 	<end-state id="endState"/>
 	

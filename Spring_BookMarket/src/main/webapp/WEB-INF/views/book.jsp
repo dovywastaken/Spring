@@ -10,6 +10,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/controllers.js"></script>
 </head>
 <body>
+<!--  
 		<nav class="navbar navbar-expand navbar-dark bg-dark">
 			<div class="container">
 				<div class="navbar-header">
@@ -24,7 +25,7 @@
 				<h1 class="display-3">도서 정보</h1>
 			</div>
 		</div>
-		
+		-->
 		<div class="container">
 			<div class="row">
 				<div class="col-md-4">
@@ -60,7 +61,7 @@
 				</div>
 			</div>
 			<hr>
-			<footer><p>&copy; BookMarket</p></footer>
+			<!--  <footer><p>&copy; BookMarket</p></footer>-->
 		</div>
 </body>
 </html>
