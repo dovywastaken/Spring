@@ -245,8 +245,17 @@ public class BookRepositoryImpl implements BookRepository
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++++");
         System.out.println("[BookRepositoryImpl: setNewBook() 호출됨]");
-    	listOfBooks.add(book);
-    	System.out.println("폼에 맞춰 작성한 dto를 repository에 저장합니다");
+        
+        String SQL = "insert into book (b_bookId, b_name, b_unitPrice, b_author, b_description, b_publisher, b_category, b_unitsInstock, b_releaseDate, b_condition, b_fileName)"
+        							+ "values(?,?,?,?,?,?,?,?,?,?,?)";
+        System.out.println("SQL문을 작성했습니다 : "+SQL);
+        System.out.println("테스트용 "+book.getFileName());
+        template.update(SQL, book.getBookId(), book.getName(), book.getUnitPrice(),book.getAuthor(),
+        					book.getDescription(),book.getPublisher(),book.getCategory(),book.getUnitsInstock(),
+        					book.getReleaseDate(),book.getCondition(),book.getFileName());
+
+    	//listOfBooks.add(book);
+    	System.out.println("폼에 맞춰 작성한 dto를 JdbcTemplate 객체를 통해 DB에 저장합니다");
     	System.out.println("[BookRepositoryImpl: setNewBook() 종료]");
     	System.out.println("+++++++++++++++++++++++++++++++++++++++++");
     }

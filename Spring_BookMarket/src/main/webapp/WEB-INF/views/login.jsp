@@ -10,21 +10,6 @@
 <link href="/Spring_BookMarket/resources/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<!--
-	<nav class="navbar navbar-expand navbar-dark bg-dark">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="./home">Home</a>
-			</div>
-		</div>
-	</nav>
-	
-	<div class="jumbotron">
-		<div class="container">
-			<h1 class="display-3">로그인</h1>
-		</div>
-	</div>
-	  -->
 	<div class="container col-md-4">
 		<div class="text-center">
 			<h3 class="form-signin-heading">Please login</h3>
@@ -47,7 +32,7 @@
 		</div>
 		
 		<div class="form-group row">
-			<input type="password" name="password" class="form-control" placeholder="Pasword" required>
+			<input type="password" name="password" class="form-control" placeholder="Password" required>
 		</div>
 		
 		<div class="form-group row">

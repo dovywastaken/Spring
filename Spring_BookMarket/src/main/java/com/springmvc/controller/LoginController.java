@@ -31,6 +31,9 @@ public class LoginController
 	@GetMapping("/logout")
 	public String logout(Model model) 
 	{
+		System.out.println("================================================================");
+		System.out.println("[LoginController: logout으로 매핑되어 컨트롤러로 들어왔습니다]");
+		System.out.println("[login.jsp로 이동합니다]");
 		return "login";
 	}
 	
