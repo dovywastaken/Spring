@@ -86,5 +86,12 @@
 		<put-attribute name="subheading" value="Invalid Cart"/>
 		<put-attribute name="content" value="/WEB-INF/flows/order/orderCartWarning.jsp"/>
 	</definition>
+	
+	<definition name="updateForm" extends="base-Template">
+		<put-attribute name="title" value="Book"/>
+		<put-attribute name="heading" value="도서수정"/>
+		<put-attribute name="subheading" value="Book Editing"/>
+		<put-attribute name="content" value="/WEB-INF/views/updateForm.jsp"/>
+	</definition>
 
 </tiles-definitions>

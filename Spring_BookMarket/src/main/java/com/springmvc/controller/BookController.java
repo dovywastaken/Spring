@@ -151,7 +151,6 @@ public class BookController {
         return "book";
     }
     
-    
     @GetMapping("/add")
     public String requestAddBookForm(@ModelAttribute("NewBook") Book book) 
     {
@@ -166,40 +165,19 @@ public class BookController {
         System.out.println("================================================================");
         System.out.println("[BookController: submitAddNewBook() : 'PostMapping : add'(form태그)로 매핑되어 컨트롤러로 들어왔습니다]");
         
-        String save = req.getServletContext().getRealPath("/resources/images");
-        if (save == null) {
-            System.out.println("경로 불러오기 실패");
-        } else {
-            System.out.println("저장 경로" + save);
-        }
+        String savePath = req.getServletContext().getRealPath("/resources/images");
+        System.out.println("저장 경로: " + savePath);
         
         if (result.hasErrors()) {
             return "addBook";
         }
         
         MultipartFile bookImage = book.getBookImage();
-        if (bookImage == null) {
-            System.out.println("dto에서 이미지 불러오기 실패");
-        } else {
-            System.out.println("dto에서 불러온 책 " + bookImage);
-        }
-        
-        String saveName = bookImage.getOriginalFilename();
-        if (saveName == null) {
-            System.out.println("파일 이름 불러오기 실패");
-        } else {
-            System.out.println("DTO에서 불러온 파일 이름은 " + saveName);
-        }
-        
-        File saveFile = new File(save, saveName);
-        if (saveFile == null) {
-            System.out.println("saveFile 실패" + saveFile);
-        } else {
-            System.out.println("saveFile 성공" + saveFile);
-        }
-        
         if (bookImage != null && !bookImage.isEmpty()) {
             try {
+                String saveName = bookImage.getOriginalFilename();
+                File saveFile = new File(savePath, saveName);
+                System.out.println("저장할 파일: " + saveFile.getAbsolutePath());
                 bookImage.transferTo(saveFile);
                 book.setFileName(saveName);
             } catch (Exception e) {
@@ -208,11 +186,10 @@ public class BookController {
         }
         
         bookService.setNewBook(book);
-        System.out.println("form에서 작성한 데이터를 dto에 담고 books.jsp로 리다렉션 합니다");
+        System.out.println("[form에서 작성한 데이터를 dto에 담고 books.jsp로 리다렉션 합니다]");
         return "redirect:/books";
     }
 
-    
     @ModelAttribute
     public void addAttributes(Model model) {model.addAttribute("addTitle", "신규 도서 등록");}
     
@@ -228,11 +205,52 @@ public class BookController {
     @ExceptionHandler(value= {BookIdException.class})
     public ModelAndView handleError(HttpServletRequest req, BookIdException exception) 
     {
+    	System.out.println("ModelAndView");
     	ModelAndView mav = new ModelAndView();
     	mav.addObject("invalidBookId", exception.getBookId());
     	mav.addObject("exception", exception);
     	mav.addObject("url", req.getRequestURI() + "?" + req.getQueryString());
     	mav.setViewName("errorBook");
     	return mav;
+    }
+    
+    @GetMapping("/update")
+    public String getUpdateBookForm(@ModelAttribute("updateBook") Book book, @RequestParam("id") String bookId, Model model) 
+    {
+    	System.out.println("================================================================");
+        System.out.println("[BookController: getUpdateBookForm() : 'GetMapping : update'로 매핑되어 컨트롤러로 들어왔습니다]");
+    	
+    	Book bookById = bookService.getBookById(bookId);
+    	model.addAttribute("book",bookById);
+    	Book bookt = (Book)model.getAttribute("book");
+    	System.out.println(bookById.getFileName());
+
+        System.out.println("[dto 정보를 들고 updateForm.jsp로 이동합니다]");
+    	return "updateForm";
+    }
+    
+    @PostMapping("/update")
+    public String submitUpdateBookForm(@ModelAttribute("updateBook") Book book, HttpServletRequest req) 
+    {
+    	System.out.println("================================================================");
+        System.out.println("[BookController: submitUpdateBookForm() : '@PostMapping : update'로 매핑되어 컨트롤러로 들어왔습니다]");
+    	
+    	MultipartFile bookImage = book.getBookImage();
+    	String save = req.getServletContext().getRealPath("/resources/images");
+    	if(bookImage != null && !bookImage.isEmpty()) 
+    	{
+    		try 
+    		{
+    			String fname = bookImage.getOriginalFilename();
+    			bookImage.transferTo(new File(save + fname));
+    			book.setFileName(fname);
+    		}catch(Exception e) 
+    		{
+    			throw new RuntimeException("Book Image saving failed", e);
+    		}
+    	}
+    	bookService.setUpdateBook(book);
+    	System.out.println("[books.jsp로 리다렉션 합니다]");
+    	return "redirect:/books";
     }
 }

@@ -72,6 +72,12 @@ public class BookServiceImpl implements BookService
 		System.out.println("서비스를 거쳐갑니다");
 		System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 	}
+
+	@Override
+	public void setUpdateBook(Book book) 
+	{
+		bookRepository.setUpdateBook(book);
+	}
     
     
 }

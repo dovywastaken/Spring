@@ -10,16 +10,17 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
     
     <http use-expressions="true">
-    	<intercept-url pattern="/books/add"  access="hasRole('ROLE_ADMIN')"/>
-        <form-login login-page="/login"
-        			default-target-url="/books/add"
-        			authentication-failure-url="/loginfailed"
-        			username-parameter="username"
-        			password-parameter="password"
-        />
-        <csrf/>
-        <logout logout-success-url="/logout"/>
-    </http>
+    	<intercept-url pattern="/books/add" access="hasRole('ROLE_ADMIN')"/>
+    	<intercept-url pattern="/books/update/**" access="hasRole('ROLE_ADMIN')"/>
+    	<form-login login-page="/login"
+                default-target-url="/books"
+                authentication-failure-url="/loginfailed"
+                username-parameter="username"
+                password-parameter="password"/>
+    	<csrf/>
+    	<logout logout-success-url="/logout"/>
+</http>
+
     
     <authentication-manager>
     	<authentication-provider>
